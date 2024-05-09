@@ -34,3 +34,5 @@ Step 7: Start Your Node
 Once all configurations are set, click on the "Start Node" button to initiate your node and begin operations.
 
 ( U ONLY EARN WITH A VALID LICENSE OBTAINED ON THE MARKETPLACE )
+
+ONly Works on Windows 7 and Above, NO TINY OS or other Modified Windows Version you are on ur Own then,

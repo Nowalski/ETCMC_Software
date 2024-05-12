@@ -35,4 +35,13 @@ Once all configurations are set, click on the "Start Node" button to initiate yo
 
 ( U ONLY EARN WITH A VALID LICENSE OBTAINED ON THE MARKETPLACE )
 
-ONly Works on Windows 7 and Above, NO TINY OS or other Modified Windows Version you are on ur Own then,
+### Compatibility:
+
+#### Windows Support:
+- **Operating System**: Only works on Windows 7 and above.
+- **Note**: No support for TinyOS or other modified Windows versions. If you choose to use these systems, you are on your own.
+
+#### Special Pre-Release for Linux Users:
+- **Version**: ETCMC 2.0-alpha_Linux
+- **Warning**: This is a pre-release version available for Linux users. Only use if you are knowledgeable in the OS. There is no support for this Linux version whatsoever for now.
+- **Please Note**: This Linux version is intended for developers and advanced users who are familiar with Linux environments and do not require support. Proceed with caution.

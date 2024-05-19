@@ -12,22 +12,53 @@
         .hidden {
             display: none;
         }
+        .alert {
+    padding: 15px;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    color: #8f0513;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+}
+
+.alert i {
+    margin-right: 10px;
+    color: #721c24;
+}
+
+.alert-content {
+    flex-grow: 1;
+}
+
+.alert-content strong {
+    font-weight: bold;
+}
+
+.login-btn {
+    margin-top: 20px; /* Adjust the margin as needed */
+    font-size: 18px; /* Adjust the font size as needed */
+    padding: 10px 20px; /* Adjust the padding as needed */
+}
+
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>ETCMC Client <span id="version">Version: N/A</span></h1>
+        <h1>ETCMC Client <span id="version">Version: 1.1</span></h1>
 
-        <!-- Username Display Section -->
-        <div id="username-display" class="username-display">
-        </div>
+<!-- Username Display Section -->
+<div id="username-display" class="username-display">
+    Welcome: Demo!
+</div>
+
         <div class="dropdown">
             <button class="dropbtn"><i class="fas fa-cog"></i></button>
             <div class="dropdown-content">
                 <label for="port">Geth Port:</label><br>
                 <input type="text" id="port" name="port" value="30303" required><br><br>
                 <!-- Add more settings options here -->
-                <button id="change-credentials-btn" class="btn">Change Credentials</button>
+                <a href="change_credentials.html" class="btn">Change Credentials</a>
                 <!-- Button to hide/show system usage -->
                 <button id="toggle-system-usage-btn" class="btn">Toggle System Usage</button>
                 <!-- Logout button -->
@@ -86,11 +117,20 @@
         </div>
     </div>
 
-    <!-- Links to other pages -->
-    <div class="page-links">
-        <a href="login.html" class="btn">Login</a>
-        <a href="change_credentials.html" class="btn">Change Credentials</a>
+<!-- Links to other pages -->
+<div class="page-links">
+    <div class="alert">
+        <i class="fas fa-exclamation-circle"></i>
+        <div class="alert-content">
+            <strong>Alert:</strong>
+            <p>This is just for demo purposes for GitHub. Most functionalities won't work here as most JavaScript scripts cannot be executed, and there is no backend. This is purely for design demonstration.</p>
+        </div>
     </div>
+</div>
+
+<a href="login.html" class="btn login-btn">Login</a>
+
+
 
     <footer class="footer">
         <p>&copy; <script>document.write( new Date().getFullYear() );</script> ETCMC Client. All rights reserved.</p>

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ETCMC Client</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="static/styles.css">
+    <link rel="stylesheet" href="static/styles.css"> <!-- Adjusted path for CSS -->
     <!-- SweetAlert2 CDN -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <style>
@@ -16,9 +16,11 @@
 </head>
 <body>
     <div class="container">
-        <h1>ETCMC Client</h1>
-        <!-- Settings dropdown -->
-        <!-- Add a logout item to the dropdown menu -->
+        <h1>ETCMC Client <span id="version">Version: N/A</span></h1>
+
+        <!-- Username Display Section -->
+        <div id="username-display" class="username-display">
+        </div>
         <div class="dropdown">
             <button class="dropbtn"><i class="fas fa-cog"></i></button>
             <div class="dropdown-content">
@@ -84,11 +86,17 @@
         </div>
     </div>
 
+    <!-- Links to other pages -->
+    <div class="page-links">
+        <a href="login.html" class="btn">Login</a>
+        <a href="change_credentials.html" class="btn">Change Credentials</a>
+    </div>
+
     <footer class="footer">
-        <p>&copy; 2024 ETCMC Client. All rights reserved.</p>
+        <p>&copy; <script>document.write( new Date().getFullYear() );</script> ETCMC Client. All rights reserved.</p>
     </footer>
 
-    <script src="static/scripts.js"></script>
+    <script src="static/scripts.js"></script> <!-- Adjusted path for JavaScript -->
     <script>
     // Function to increase font size
 document.getElementById("font-size-increase-btn").addEventListener("click", function() {
@@ -118,6 +126,26 @@ window.addEventListener("load", function() {
     }
 });
 
-    </script>
-</body>
-</html>
+// Function to fetch registration status and display username
+function fetchRegistrationStatus() {
+    fetch('/register/check_status')
+        .then(response => response.json())
+        .then(data => {
+            console.log('Registration status response:', data); // Log the response data
+            const usernameDisplay = document.getElementById('username-display');
+            if (data.registration_details) {
+                const username = data.registration_details.match(/Username: (.+)\n/)[1];
+                console.log('Username:', username); // Log the extracted username
+                usernameDisplay.textContent = `Welcome, ${username}`; // Set the username in the element
+            } else {
+                console.error('No registration details found'); // Log if no registration details are found
+                // Remove HTML content from the username display element
+                usernameDisplay.innerHTML = '';
+            }
+        })
+        .catch(error => console.error('Error checking registration status:', error)); // Log any errors during the process
+}
+
+// Call fetchRegistrationStatus initially
+fetchRegistrationStatus();
+

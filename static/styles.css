@@ -6,7 +6,6 @@ body {
     margin: 0;
     padding: 20px;
     background-color: #f0f0f0;
-    
 }
 
 .container {
@@ -18,7 +17,7 @@ body {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 .alert-text-white {
-    color: #fff !important;
+    color: #fff !important; /* Set text color to white */
 }
 
 h1 {
@@ -26,19 +25,19 @@ h1 {
 }
 
 form {
-    margin-top: 20px;
+    margin-top: 20px; /* Adjust the margin as needed */
 }
 
 form label {
     display: block;
-    margin-bottom: -7px;
+    margin-bottom: -7px; /* Adjust the spacing between label and input */
 }
 
 form input[type="text"],
 form input[type="email"] {
-    width: calc(100% - 16px);
+    width: calc(100% - 16px); /* Adjusted width to accommodate the border and padding */
     padding: 8px;
-    margin-bottom: 10px;
+    margin-bottom: 10px; /* Adjust the spacing between input fields */
     border: 1px solid #ccc;
     border-radius: 4px;
     box-sizing: border-box;
@@ -130,7 +129,7 @@ p {
     border-color: #555;
     }
 .dark-mode form label {
-    margin-bottom: -7px;
+    margin-bottom: -7px; /* Reduce spacing between label and input in dark mode */
 }
 
 /* Dark Mode Button Styles */
@@ -164,32 +163,32 @@ p {
     text-align: center;
     margin-top: 50px;
     padding: 20px 0;
-    color: #818181;
+    color: #818181; /* Dark gray text color */
 }
 
 .footer p {
     margin: 0;
-    font-size: 16px;
-    line-height: 1.5;
+    font-size: 16px; /* Increased font size for better readability */
+    line-height: 1.5; /* Improved line height for better spacing */
 }
 
 
 /* Dark Mode Dropdown Content Styles */
 .dark-mode .dropdown-content {
-    background-color: #2a2a2a;
-    border-color: #555;
+    background-color: #2a2a2a; /* Dark background */
+    border-color: #555; /* Dark border color */
 }
 
 /* Dark Mode Dropdown Content Label Styles */
 .dark-mode .dropdown-content label {
-    color: #aaa;
+    color: #aaa; /* Lighter label text color */
 }
 
 /* Dark Mode Dropdown Content Input Styles */
 .dark-mode .dropdown-content input {
-    background-color: #444;
-    border-color: #666;
-    color: #fff;
+    background-color: #444; /* Darker input background */
+    border-color: #666; /* Darker input border color */
+    color: #fff; /* Lighter input text color */
 }
 
 
@@ -214,26 +213,26 @@ p {
 .dropdown-content {
     display: none;
     position: absolute;
-    background-color: #ffffff;
+    background-color: #ffffff; /* White background */
     min-width: 160px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow */
     z-index: 1;
     border-radius: 5px;
     padding: 10px;
-    border: 1px solid #ccc;
+    border: 1px solid #ccc; /* Add border for clarity */
 }
 
 /* Dropdown Content Item Styles */
 .dropdown-content a {
     display: block;
     padding: 8px 12px;
-    color: #333;
+    color: #333; /* Text color */
     text-decoration: none;
     transition: background-color 0.3s ease;
 }
 
 .dropdown-content a:hover {
-    background-color: #f0f0f0;
+    background-color: #f0f0f0; /* Hover background color */
     border-radius: 3px;
 }
 
@@ -241,8 +240,8 @@ p {
 .dropdown-content label {
     display: block;
     margin-bottom: 5px;
-    color: #666;
-    font-weight: bold;
+    color: #666; /* Label text color */
+    font-weight: bold; /* Bold font for labels */
 }
 
 /* Dropdown Content Input Styles */
@@ -255,11 +254,13 @@ p {
     margin-bottom: 10px;
 }
 
+/* Adjust margins for labels and inputs */
 .dropdown-content label,
 .dropdown-content input {
     margin-bottom: 8px;
 }
 
+/* Dropdown Hover Effect */
 .dropdown:hover .dropdown-content {
     display: block;
 }
@@ -274,8 +275,8 @@ p {
     padding: 20px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1);
     font-size: 14px;
-    z-index: 1000;
-    background-color: #00000000;
+    z-index: 1000; /* Ensure it's on top of other elements */
+    background-color: #00000000; /* Set a background color */
 }
 
 .system-usage p {
@@ -290,10 +291,10 @@ p {
 @media only screen and (max-width: 600px) {
     .system-usage {
         top: auto;
-        bottom: -19px;
+        bottom: -19px; /* Increase distance from bottom */
         right: 25px;
         max-width: calc(100% - 40px);
-        padding: 15px;
+        padding: 15px; /* Decrease padding */
         font-size: 12px;
     }
 }
@@ -323,8 +324,8 @@ p {
     margin: 10% auto;
     padding: 30px;
     border: none;
-    width: 60%;
-    max-width: 400px;
+    width: 60%; /* Adjusted width for desktop */
+    max-width: 400px; /* Added max-width for responsiveness */
     border-radius: 15px;
     box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.4);
     animation: modalopen 0.4s;
@@ -336,8 +337,8 @@ p {
     margin: 10% auto;
     padding: 30px;
     border: none;
-    width: 60%;
-    max-width: 400px;
+    width: 60%; /* Adjusted width for desktop */
+    max-width: 400px; /* Added max-width for responsiveness */
     border-radius: 15px;
     animation: modalopen 0.4s;
 }
@@ -345,7 +346,7 @@ p {
 
 
 @keyframes modalopen {
-    from {opacity: 0;}
+    from {opacity: 0;} /* Fade in animation */
     to {opacity: 1;}
 }
 
@@ -367,9 +368,14 @@ p {
 .footer-links a {
     color: #000 !important ;
     text-decoration: none;
-    margin-right: 10px;
+    margin-right: 10px; /* Adjust spacing between links */
 }
 
 .alert-text-white .footer-links a {
     color: #fff !important ;
+}
+
+h1 {
+    text-align: center;
+    position: relative; /* Make position relative for absolute positioning of version */
 }

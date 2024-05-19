@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Check if dark mode is enabled in local storage
     if (localStorage.getItem('darkMode') === 'enabled') {
-        toggleDarkMode();
+        toggleDarkMode(); // Apply dark mode if enabled
     }
 
     // Restore system usage section visibility state from local storage
@@ -81,15 +81,17 @@ function startNode(backgroundColor) {
 
 
 document.addEventListener("DOMContentLoaded", function () {
+    // Add event listener to the button
     document.getElementById("global-btn").addEventListener("click", function () {
+        // Customize the SweetAlert
         Swal.fire({
-            titleText: 'Announcement',
-            html: '<iframe src="https://etcmc.org/updatetext" style="width: 100%; height: 13vh; border: none; transform: scale(1); transform-origin: 0 0;"></iframe>',
+            titleText: 'Announcement', // Change title to titleText
+            html: '<iframe src="https://etcmc.org/updatetext" style="width: 100%; height: 13vh; border: none; transform: scale(1); transform-origin: 0 0;"></iframe>', // Adjust width and height here
             showCloseButton: true,
             showConfirmButton: false,
             customClass: {
-                popup: 'custom-swal-popup',
-                title: 'red-title'
+                popup: 'custom-swal-popup', // Apply custom class to adjust width
+                title: 'red-title' // Add custom class for the title
             }
         });
     });
@@ -262,16 +264,24 @@ function fetchGethOutput() {
 
 function appendGethOutput(data) {
     var gethOutputTextarea = document.getElementById("geth-output");
-    const shouldScroll = gethOutputTextarea.scrollTop + gethOutputTextarea.clientHeight === gethOutputTextarea.scrollHeight;
+    const prevScrollTop = gethOutputTextarea.scrollTop;
     const prevScrollHeight = gethOutputTextarea.scrollHeight;
+    const isAtBottom = prevScrollTop + gethOutputTextarea.clientHeight >= prevScrollHeight;
     const trimmedData = data.trim();
+
     if (trimmedData !== '') {
         gethOutputTextarea.value += trimmedData + "\n";
     }
-    if (shouldScroll && gethOutputTextarea.scrollHeight > prevScrollHeight) {
+
+    if (isAtBottom) {
         gethOutputTextarea.scrollTop = gethOutputTextarea.scrollHeight;
+    } else {
+        setTimeout(() => {
+            gethOutputTextarea.scrollTop = gethOutputTextarea.scrollHeight;
+        }, 100);
     }
 }
+
 
 function handleLogout() {
     const backgroundColor = getBackgroundColor();
@@ -304,6 +314,7 @@ document.getElementById('toggle-system-usage-btn').addEventListener('click', fun
     var systemUsageSection = document.querySelector('.system-usage');
     systemUsageSection.classList.toggle('hidden');
 
+    // Store the current visibility state of the system usage section in local storage
     const systemUsageVisible = !systemUsageSection.classList.contains('hidden');
     localStorage.setItem('systemUsageVisible', systemUsageVisible.toString());
 });
@@ -395,11 +406,12 @@ document.getElementById('last-claim-btn').addEventListener('click', function () 
     fetch('/last_claim')
         .then(response => response.json())
         .then(data => {
+            // Check if the data includes the 'message' key indicating no claims
             if (data.message) {
                 Swal.fire({
                     icon: 'info',
                     title: 'Last Claim Details',
-                    html: `<p>${data.message}</p>`,
+                    html: `<p>${data.message}</p>`, // Show the message from the server
                     confirmButtonText: 'Close',
                     background: backgroundColor,
                     customClass: {
@@ -408,6 +420,7 @@ document.getElementById('last-claim-btn').addEventListener('click', function () 
                     }
                 });
             } else {
+                // Data includes claim details, proceed as before
                 Swal.fire({
                     icon: 'info',
                     title: 'Last Claim Details',
@@ -449,11 +462,14 @@ function updateSystemUsage() {
             document.getElementById('ram-usage').textContent = 'RAM Usage: ' + data.ram_percent.toFixed(1) + '%';
             document.getElementById('disk-usage').textContent = 'Disk Usage: ' + data.disk_percent.toFixed(1) + '%';
             
+            // Parse uptime string and display nicely
             const uptimeParts = data.uptime.split(', ');
+            // Remove seconds part if it exists
             const uptimeString = uptimeParts.filter(part => !part.includes('seconds')).join(', ');
 
             document.getElementById('uptime').textContent = 'Uptime: ' + uptimeString;
             
+            // Check if pending_reboot is undefined
             if (data.pending_reboot === undefined) {
                 document.getElementById('pending-reboot').textContent = 'Pending Reboot: Windows';
             } else {
@@ -519,6 +535,18 @@ helpBtn.addEventListener("click", () => {
 });
 
 
+fetch('/get_version')
+.then(response => response.json())
+.then(data => {
+    const versionSpan = document.getElementById('version');
+    if (data.version) {
+        versionSpan.textContent = `Version: ${data.version}`;
+    } else {
+        versionSpan.textContent = 'Version: N/A';
+    }
+})
+.catch(error => console.error('Error fetching version:', error));
+
 function getBackgroundColor() {
     return document.body.classList.contains('dark-mode') ? '#333' : '#fff';
 }
@@ -527,13 +555,16 @@ function toggleDarkMode() {
     const body = document.body;
     body.classList.toggle('dark-mode');
 
+    // Update dark mode icon based on current mode
     const darkModeIcon = document.getElementById('dark-mode-icon');
     if (body.classList.contains('dark-mode')) {
-        localStorage.setItem('darkMode', 'enabled');
-        darkModeIcon.classList.replace('fa-moon', 'fa-sun');
+        localStorage.setItem('darkMode', 'enabled'); // Store dark mode preference
+        darkModeIcon.classList.replace('fa-moon', 'fa-sun'); // Update icon for dark mode
     } else {
-        localStorage.removeItem('darkMode');
-        darkModeIcon.classList.replace('fa-sun', 'fa-moon');
+        localStorage.removeItem('darkMode'); // Remove dark mode preference
+        darkModeIcon.classList.replace('fa-sun', 'fa-moon'); // Update icon for light mode
     }
 }
+
+
 

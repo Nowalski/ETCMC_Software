@@ -27,6 +27,14 @@ document.addEventListener('DOMContentLoaded', function() {
     getCurrentBalance();
     fetchGethOutput();
 });
+document.addEventListener('DOMContentLoaded', function() {
+    fetch('/get_port')
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('port').value = data.port;
+        })
+        .catch(error => console.error('Error fetching port:', error));
+});
 
 function startNode(backgroundColor) {
     var port = document.getElementById("port").value || "30303";
@@ -51,6 +59,13 @@ function startNode(backgroundColor) {
                     title: getBackgroundColor() === '#333' ? 'red-title' : '' 
                 }
             });
+            fetch('/save_port', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ port: port })
+            }).catch(error => console.error('Error saving port:', error));
         } else {
             Swal.fire({
                 icon: data.success ? 'success' : 'error',
@@ -79,24 +94,20 @@ function startNode(backgroundColor) {
     });
 }
 
-
 document.addEventListener("DOMContentLoaded", function () {
-    // Add event listener to the button
     document.getElementById("global-btn").addEventListener("click", function () {
-        // Customize the SweetAlert
         Swal.fire({
-            titleText: 'Announcement', // Change title to titleText
+            titleText: 'Announcement',
             html: '<iframe src="https://etcmc.org/updatetext" style="width: 100%; height: 13vh; border: none; transform: scale(1); transform-origin: 0 0;"></iframe>', // Adjust width and height here
             showCloseButton: true,
             showConfirmButton: false,
             customClass: {
-                popup: 'custom-swal-popup', // Apply custom class to adjust width
-                title: 'red-title' // Add custom class for the title
+                popup: 'custom-swal-popup',
+                title: 'red-title'
             }
         });
     });
 });
-
 
 setInterval(fetchBalanceAndEstimatedTime, 5000);
 
@@ -314,7 +325,6 @@ document.getElementById('toggle-system-usage-btn').addEventListener('click', fun
     var systemUsageSection = document.querySelector('.system-usage');
     systemUsageSection.classList.toggle('hidden');
 
-    // Store the current visibility state of the system usage section in local storage
     const systemUsageVisible = !systemUsageSection.classList.contains('hidden');
     localStorage.setItem('systemUsageVisible', systemUsageVisible.toString());
 });
@@ -406,12 +416,11 @@ document.getElementById('last-claim-btn').addEventListener('click', function () 
     fetch('/last_claim')
         .then(response => response.json())
         .then(data => {
-            // Check if the data includes the 'message' key indicating no claims
             if (data.message) {
                 Swal.fire({
                     icon: 'info',
                     title: 'Last Claim Details',
-                    html: `<p>${data.message}</p>`, // Show the message from the server
+                    html: `<p>${data.message}</p>`,
                     confirmButtonText: 'Close',
                     background: backgroundColor,
                     customClass: {
@@ -420,7 +429,6 @@ document.getElementById('last-claim-btn').addEventListener('click', function () 
                     }
                 });
             } else {
-                // Data includes claim details, proceed as before
                 Swal.fire({
                     icon: 'info',
                     title: 'Last Claim Details',
@@ -462,14 +470,11 @@ function updateSystemUsage() {
             document.getElementById('ram-usage').textContent = 'RAM Usage: ' + data.ram_percent.toFixed(1) + '%';
             document.getElementById('disk-usage').textContent = 'Disk Usage: ' + data.disk_percent.toFixed(1) + '%';
             
-            // Parse uptime string and display nicely
             const uptimeParts = data.uptime.split(', ');
-            // Remove seconds part if it exists
             const uptimeString = uptimeParts.filter(part => !part.includes('seconds')).join(', ');
 
             document.getElementById('uptime').textContent = 'Uptime: ' + uptimeString;
             
-            // Check if pending_reboot is undefined
             if (data.pending_reboot === undefined) {
                 document.getElementById('pending-reboot').textContent = 'Pending Reboot: Windows';
             } else {
@@ -480,7 +485,6 @@ function updateSystemUsage() {
             console.error('Error fetching system usage data:', error);
         });
 }
-
 
 
 updateSystemUsage();
@@ -555,14 +559,13 @@ function toggleDarkMode() {
     const body = document.body;
     body.classList.toggle('dark-mode');
 
-    // Update dark mode icon based on current mode
     const darkModeIcon = document.getElementById('dark-mode-icon');
     if (body.classList.contains('dark-mode')) {
-        localStorage.setItem('darkMode', 'enabled'); // Store dark mode preference
-        darkModeIcon.classList.replace('fa-moon', 'fa-sun'); // Update icon for dark mode
+        localStorage.setItem('darkMode', 'enabled');
+        darkModeIcon.classList.replace('fa-moon', 'fa-sun');
     } else {
-        localStorage.removeItem('darkMode'); // Remove dark mode preference
-        darkModeIcon.classList.replace('fa-sun', 'fa-moon'); // Update icon for light mode
+        localStorage.removeItem('darkMode');
+        darkModeIcon.classList.replace('fa-sun', 'fa-moon');
     }
 }
 

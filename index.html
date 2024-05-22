@@ -45,27 +45,32 @@
 </head>
 <body>
     <div class="container">
-        <h1>ETCMC Client <span id="version">Version: 1.1</span></h1>
+        <h1>ETCMC Client <span id="version">Version: N/A</span></h1>
 
-<!-- Username Display Section -->
-<div id="username-display" class="username-display">
-    Welcome: Demo!
-</div>
-
+        <div class="top-right">
+            <!-- Username Display Section -->
+            <div id="username-display" class="username-display">
+                <!-- The username will be dynamically set via JavaScript -->
+                NFT-ID, <span id="user-name">Demo...</span>
+            </div>
+            
+            <p><strong>ETCPOW Increment (Per Transaction):</strong> <span id="etcpow-increment">0.00384</span></p>
+            <p><strong>Claim Target Balance:</strong> <span id="claim-target-balance">100</span></p>
+        </div>
+        
         <div class="dropdown">
             <button class="dropbtn"><i class="fas fa-cog"></i></button>
             <div class="dropdown-content">
                 <label for="port">Geth Port:</label><br>
                 <input type="text" id="port" name="port" value="30303" required><br><br>
                 <!-- Add more settings options here -->
-                <a href="change_credentials.html" class="btn">Change Credentials</a>
+                <button id="change-credentials-btn" class="btn">Change Credentials</button>
                 <!-- Button to hide/show system usage -->
                 <button id="toggle-system-usage-btn" class="btn">Toggle System Usage</button>
                 <!-- Logout button -->
                 <button id="logout-btn" class="btn">Logout</button>
             </div>
         </div>
-
 
         <!-- Dark mode button -->
         <button id="dark-mode" class="dark-mode-btn"><i id="dark-mode-icon" class="fa-solid fa-circle-half-stroke"></i></button>
@@ -186,6 +191,22 @@ function fetchRegistrationStatus() {
         .catch(error => console.error('Error checking registration status:', error)); // Log any errors during the process
 }
 
-// Call fetchRegistrationStatus initially
+document.addEventListener('DOMContentLoaded', function() {
+            fetch('/api/parameters')
+                .then(response => response.json())
+                .then(data => {
+                    const etcpowIncrement = data.ETCPOW_INCREMENT;
+
+                    document.getElementById('claim-target-balance').textContent = data.CLAIM_TARGET_BALANCE;
+                    document.getElementById('etcpow-increment').textContent = etcpowIncrement;
+
+                })
+                .catch(error => {
+                    console.error('Error fetching parameters:', error);
+                });
+        });
 fetchRegistrationStatus();
 
+</script>
+</body>
+</html>

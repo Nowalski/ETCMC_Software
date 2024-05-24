@@ -44,6 +44,6 @@ Once all configurations are set, click on the "Start Node" button to initiate yo
 - **Note**: No support for TinyOS or other modified Windows versions. If you choose to use these systems, you are on your own.
 
 #### Special Pre-Release for Linux Users:
-- **Version**: ETCMC 2.0-alpha_Linux
+- **Version**: ETCMC_Linux.zip
 - **Warning**: This is a pre-release version available for Linux users. Only use if you are knowledgeable in the OS. There is no support for this Linux version whatsoever for now.
 - **Please Note**: This Linux version is intended for developers and advanced users who are familiar with Linux environments and do not require support. Proceed with caution.

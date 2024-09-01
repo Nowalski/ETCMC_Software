@@ -3,14 +3,14 @@ Preview On Github: [ETCMC 2.0 on GitHub](https://nowalski.github.io/ETCMC_Softwa
 # ETCMC_Software
 ETCMC_Software Win / Linux
 
-Step-by-Step Guide for Setting Up ETCMC 2.5.2
+Step-by-Step Guide for Setting Up ETCMC 2.5.4
 Step 1: Download and Installation
-Visit the official GitHub page to download ETCMC 2.5.2: ETCMC 2.5.2 on GitHub
+Visit the official GitHub page to download ETCMC 2.5.4: ETCMC 2.5.4 on GitHub
 Download the latest release to your computer.
 
 Step 2: Run the Application
-Locate the downloaded ETCMC 2.5.2 executable file.
-Right-click on the ETCMC 2.5.2 executable and select "Run as administrator" to ensure proper installation.
+Locate the downloaded ETCMC 2.5.4 executable file.
+Right-click on the ETCMC 2.5.4 executable and select "Run as administrator" to ensure proper installation.
 
 Step 3: Configure Port Settings
 After launching the ETCMC Client, navigate to the port settings.

@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ETCMC Client - Statistics Dashboard</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
+  <style>
+    :root {
+      --primary-color: #6366f1;
+      --primary-hover: #4f46e5;
+      --secondary-color: #10b981;
+      --secondary-hover: #059669;
+      --accent-color: #f59e0b;
+      --accent-hover: #d97706;
+      --bg-primary: #ffffff;
+      --bg-secondary: #f8fafc;
+      --bg-card: #ffffff;
+      --text-primary: #1e293b;
+      --text-secondary: #64748b;
+      --text-muted: #94a3b8;
+      --text-inverse: #ffffff;
+      --border-light: #e2e8f0;
+      --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+      --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+      --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+      --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+      --spacing-xs: 0.25rem;
+      --spacing-sm: 0.5rem;
+      --spacing-md: 1rem;
+      --spacing-lg: 1.5rem;
+      --spacing-xl: 2rem;
+      --spacing-2xl: 3rem;
+      --radius-sm: 0.375rem;
+      --radius-md: 0.5rem;
+      --radius-lg: 0.75rem;
+      --radius-xl: 1rem;
+      --radius-2xl: 1.5rem;
+      --transition-normal: 250ms ease-in-out;
+      --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    [data-theme="dark"] {
+      --bg-primary: #0f172a;
+      --bg-secondary: #1e293b;
+      --bg-card: #1e293b;
+      --text-primary: #f8fafc;
+      --text-secondary: #cbd5e1;
+      --text-muted: #94a3b8;
+      --border-light: #334155;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: var(--font-family);
+      background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+      color: var(--text-primary);
+      margin: 0;
+      padding: var(--spacing-xl);
+      min-height: 100vh;
+      transition: background-color var(--transition-normal), color var(--transition-normal);
+      overflow-x: hidden;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding-bottom: var(--spacing-2xl);
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: var(--spacing-2xl);
+    }
+
+    .header h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin: 0 0 var(--spacing-sm) 0;
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .header p {
+      color: var(--text-secondary);
+      font-size: 1.125rem;
+      margin: 0;
+    }
+
+    .toggle-theme-btn {
+      position: fixed;
+      top: var(--spacing-lg);
+      right: var(--spacing-lg);
+      width: 50px;
+      height: 50px;
+      border: none;
+      border-radius: 50%;
+      background: var(--bg-card);
+      color: var(--text-secondary);
+      cursor: pointer;
+      box-shadow: var(--shadow-lg);
+      transition: all var(--transition-normal);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+    }
+
+    .toggle-theme-btn:hover {
+      transform: scale(1.1);
+      color: var(--primary-color);
+    }
+
+    .loader {
+      border: 4px solid var(--border-light);
+      border-radius: 50%;
+      border-top: 4px solid var(--primary-color);
+      width: 60px;
+      height: 60px;
+      animation: spin 1s linear infinite;
+      margin: var(--spacing-2xl) auto;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .alert {
+      padding: var(--spacing-lg);
+      border-radius: var(--radius-lg);
+      margin: var(--spacing-lg) 0;
+      border: 1px solid var(--border-light);
+      background: var(--bg-card);
+      box-shadow: var(--shadow-md);
+    }
+
+    .alert-danger {
+      background: #fef2f2;
+      border-color: #fecaca;
+      color: #dc2626;
+    }
+
+    [data-theme="dark"] .alert-danger {
+      background: #450a0a;
+      border-color: #7f1d1d;
+      color: #fca5a5;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: var(--spacing-lg);
+      margin-bottom: var(--spacing-2xl);
+    }
+
+    .stat-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-xl);
+      padding: var(--spacing-xl);
+      box-shadow: var(--shadow-md);
+      transition: all var(--transition-normal);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+    }
+
+    .stat-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .stat-header {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-md);
+      margin-bottom: var(--spacing-lg);
+    }
+
+    .stat-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius-lg);
+      background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
+      color: var(--text-inverse);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+    }
+
+    .stat-title {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin: 0;
+    }
+
+    .stat-value {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin: 0;
+    }
+
+    .stat-description {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      margin: var(--spacing-sm) 0 0 0;
+    }
+
+    .chart-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-xl);
+      padding: var(--spacing-xl);
+      box-shadow: var(--shadow-md);
+      margin-top: var(--spacing-xl);
+    }
+
+    .chart-header {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-md);
+      margin-bottom: var(--spacing-xl);
+    }
+
+    .chart-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin: 0;
+    }
+
+    .chart-container {
+      position: relative;
+      height: 300px;
+      width: 100%;
+      overflow: hidden;
+    }
+
+    .earnings-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-xl);
+      padding: var(--spacing-xl);
+      box-shadow: var(--shadow-md);
+      margin-top: var(--spacing-xl);
+    }
+
+    .earnings-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: var(--spacing-lg);
+    }
+
+    .earnings-item {
+      text-align: center;
+      padding: var(--spacing-lg);
+      background: var(--bg-secondary);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-light);
+    }
+
+    .earnings-label {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .earnings-value {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .d-none {
+      display: none !important;
+    }
+
+    .back-btn {
+      position: fixed;
+      top: var(--spacing-lg);
+      left: var(--spacing-lg);
+      width: 50px;
+      height: 50px;
+      border: none;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
+      color: var(--text-inverse);
+      cursor: pointer;
+      box-shadow: var(--shadow-lg);
+      transition: all var(--transition-normal);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      text-decoration: none;
+    }
+
+    .back-btn:hover {
+      transform: scale(1.1);
+      box-shadow: var(--shadow-xl);
+    }
+
+    @media (max-width: 768px) {
+      body {
+        padding: var(--spacing-md);
+      }
+      
+      .header h1 {
+        font-size: 2rem;
+      }
+      
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .earnings-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
+      .toggle-theme-btn,
+      .back-btn {
+        top: var(--spacing-md);
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+      }
+      
+      .toggle-theme-btn {
+        right: var(--spacing-md);
+      }
+      
+      .back-btn {
+        left: var(--spacing-md);
+      }
+      
+      .chart-container {
+        height: 250px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .earnings-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .chart-container {
+        height: 200px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a href="/" class="back-btn" title="Back to Dashboard">
+    <i class="fas fa-arrow-left"></i>
+  </a>
+
+  <button class="toggle-theme-btn" onclick="toggleTheme()" title="Toggle dark/light theme">
+    <i class="fas fa-moon"></i>
+  </button>
+
+  <div class="container">
+    <div class="header">
+      <h1>Statistics Dashboard</h1>
+      <p>Monitor your mining performance and earnings</p>
+    </div>
+
+    <div id="loader" class="loader"></div>
+
+    <div id="error-message" class="d-none"></div>
+
+    <div id="statistics-container" class="d-none">
+      <!-- Stats Cards -->
+      <div class="stats-grid" id="stats-cards"></div>
+
+      <!-- Chart -->
+      <div class="chart-card">
+        <div class="chart-header">
+          <div class="stat-icon">
+            <i class="fas fa-chart-bar"></i>
+          </div>
+          <h2 class="chart-title">Imports Over Time</h2>
+        </div>
+        <div class="chart-container">
+          <canvas id="importsChart"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const loader = document.getElementById("loader");
+    const errorMessage = document.getElementById("error-message");
+    const statsContainer = document.getElementById("statistics-container");
+    const statsCards = document.getElementById("stats-cards");
+
+    function formatNumber(num) {
+      return num.toLocaleString(undefined, { maximumFractionDigits: 2 });
+    }
+
+    function createCard(title, value, description, icon) {
+      return `
+        <div class="stat-card">
+          <div class="stat-header">
+            <div class="stat-icon">
+              <i class="${icon}"></i>
+            </div>
+            <div>
+              <h3 class="stat-title">${title}</h3>
+              <p class="stat-value">${value}</p>
+            </div>
+          </div>
+          <p class="stat-description">${description}</p>
+        </div>
+      `;
+    }
+
+    function renderStatistics(data) {
+      let cardsHTML = "";
+
+      cardsHTML += createCard(
+        "Daily Imports",
+        formatNumber(data.daily),
+        "Imports today",
+        "fas fa-calendar-day"
+      );
+      cardsHTML += createCard(
+        "Weekly Imports",
+        formatNumber(data.weekly),
+        "Imports this week",
+        "fas fa-calendar-week"
+      );
+      cardsHTML += createCard(
+        "Monthly Imports",
+        formatNumber(data.monthly),
+        "Imports this month",
+        "fas fa-calendar-alt"
+      );
+      cardsHTML += createCard(
+        "Start Date",
+        new Date(data.start_date).toLocaleDateString(),
+        "Statistics recording start date",
+        "fas fa-play-circle"
+      );
+
+      statsCards.innerHTML = cardsHTML;
+
+      // Add earnings section if available
+      if (data.theoretical_earnings) {
+        const e = data.theoretical_earnings;
+        const earningsHTML = `
+          <div class="earnings-card">
+            <div class="chart-header">
+              <div class="stat-icon">
+                <i class="fas fa-coins"></i>
+              </div>
+              <h2 class="chart-title">Theoretical Earnings</h2>
+            </div>
+            <div class="earnings-grid">
+              <div class="earnings-item">
+                <div class="earnings-label">ETCPOW Increment</div>
+                <div class="earnings-value">${e.ETCPOW_INCREMENT.toFixed(8)}</div>
+              </div>
+              <div class="earnings-item">
+                <div class="earnings-label">Days Since Reset</div>
+                <div class="earnings-value">${e.days_since_last_reset}</div>
+              </div>
+              <div class="earnings-item">
+                <div class="earnings-label">Per Hour</div>
+                <div class="earnings-value">${e.per_hour.toFixed(6)}</div>
+              </div>
+              <div class="earnings-item">
+                <div class="earnings-label">Per 24h</div>
+                <div class="earnings-value">${e.per_24h.toFixed(6)}</div>
+              </div>
+            </div>
+          </div>
+        `;
+        statsContainer.insertAdjacentHTML('beforeend', earningsHTML);
+      }
+
+      // Chart configuration
+      const ctx = document.getElementById("importsChart").getContext("2d");
+      new Chart(ctx, {
+        type: "bar",
+        data: {
+          labels: ["Daily", "Weekly", "Monthly"],
+          datasets: [{
+            label: "Number of Imports",
+            data: [data.daily, data.weekly, data.monthly],
+            backgroundColor: [
+              'rgba(99, 102, 241, 0.8)',
+              'rgba(16, 185, 129, 0.8)',
+              'rgba(245, 158, 11, 0.8)'
+            ],
+            borderColor: [
+              'rgba(99, 102, 241, 1)',
+              'rgba(16, 185, 129, 1)',
+              'rgba(245, 158, 11, 1)'
+            ],
+            borderWidth: 2,
+            borderRadius: 8,
+            borderSkipped: false,
+          }],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { 
+              display: false 
+            },
+            tooltip: {
+              backgroundColor: 'rgba(0, 0, 0, 0.8)',
+              titleColor: '#fff',
+              bodyColor: '#fff',
+              borderColor: 'rgba(255, 255, 255, 0.1)',
+              borderWidth: 1,
+              cornerRadius: 8,
+              callbacks: {
+                label: context => `Imports: ${context.parsed.y.toLocaleString()}`
+              }
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              grid: {
+                color: 'rgba(0, 0, 0, 0.1)',
+                drawBorder: false
+              },
+              ticks: {
+                precision: 0,
+                stepSize: 1,
+                color: 'var(--text-secondary)'
+              }
+            },
+            x: {
+              grid: {
+                display: false
+              },
+              ticks: {
+                color: 'var(--text-secondary)'
+              }
+            }
+          }
+        }
+      });
+    }
+
+    function toggleTheme() {
+      const body = document.body;
+      const icon = document.querySelector(".toggle-theme-btn i");
+      
+      if (body.getAttribute('data-theme') === 'dark') {
+        body.removeAttribute('data-theme');
+        localStorage.setItem('darkMode', 'disabled');
+        icon.className = 'fas fa-moon';
+      } else {
+        body.setAttribute('data-theme', 'dark');
+        localStorage.setItem('darkMode', 'enabled');
+        icon.className = 'fas fa-sun';
+      }
+    }
+
+    // Initialize theme on page load
+    document.addEventListener("DOMContentLoaded", () => {
+      if (localStorage.getItem('darkMode') === 'enabled') {
+        document.body.setAttribute('data-theme', 'dark');
+        const icon = document.querySelector(".toggle-theme-btn i");
+        if (icon) {
+          icon.className = 'fas fa-sun';
+        }
+      }
+    });
+
+    document.addEventListener("DOMContentLoaded", () => {
+      fetch("/statistics")
+        .then(response => {
+          if (!response.ok) throw new Error("Network response was not ok");
+          return response.json();
+        })
+        .then(data => {
+          loader.style.display = "none";
+
+          if (data.message) {
+            errorMessage.innerHTML = `<div class="alert alert-danger">${data.message}</div>`;
+            errorMessage.classList.remove("d-none");
+            return;
+          }
+
+          errorMessage.classList.add("d-none");
+          statsContainer.classList.remove("d-none");
+          renderStatistics(data);
+        })
+        .catch(error => {
+          loader.style.display = "none";
+          errorMessage.innerHTML = `<div class="alert alert-danger">Failed to load statistics: ${error.message}</div>`;
+          errorMessage.classList.remove("d-none");
+        });
+    });
+  </script>
+</body>
+</html>

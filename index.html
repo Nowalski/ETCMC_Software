@@ -7,75 +7,141 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="static/styles.css"> <!-- Adjusted path for CSS -->
     <link rel="icon" type="image/x-icon" href="static/favicon.ico">
+
     <!-- SweetAlert2 CDN -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <style>
         .hidden {
             display: none;
         }
-        .alert {
-    padding: 15px;
-    background-color: #f8d7da;
-    border: 1px solid #f5c6cb;
-    color: #8f0513;
-    border-radius: 5px;
-    display: flex;
-    align-items: center;
-}
-
-.alert i {
-    margin-right: 10px;
-    color: #721c24;
-}
-
-.alert-content {
-    flex-grow: 1;
-}
-
-.alert-content strong {
-    font-weight: bold;
-}
-
-.login-btn {
-    margin-top: 20px; /* Adjust the margin as needed */
-    font-size: 18px; /* Adjust the font size as needed */
-    padding: 10px 20px; /* Adjust the padding as needed */
-}
 
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>ETCMC Client <span id="version">Version: 2.2</span></h1>
-
+        <h1>ETCMC Client <span id="version">Version: N/A</span></h1>
+    
         <div class="top-right">
-            <!-- Username Display Section -->
             <div id="username-display" class="username-display">
-                <!-- The username will be dynamically set via JavaScript -->
-                NFT-ID, <span id="user-name">Demo...</span>
-            </div>
-            
-            <p><strong>ETCPOW Increment (Per Transaction):</strong> <span id="etcpow-increment">0.00384</span></p>
-            <p><strong>Claim Target Balance:</strong> <span id="claim-target-balance">100</span></p>
-        </div>
+                <p><i class="fas fa-user"></i> NFT-ID, <span id="user-name">Fetching...</span></p>
+                <p>
+            <strong><i class="fas fa-network-wired"></i> Enode URL:</strong>
+            <span id="enode-url">Fetching...</span>
+            <button onclick="copyEnode()" class="copy-button">Copy</button>
+        </p>
+    </div>
         
-        <div class="dropdown">
-            <button class="dropbtn"><i class="fas fa-cog"></i></button>
-            <div class="dropdown-content">
-                <label for="port">Geth Port:</label><br>
-                <input type="text" id="port" name="port" value="30303" required><br><br>
-                <!-- Add more settings options here -->
-                <button id="change-credentials-btn" class="btn">Change Credentials</button>
-                <!-- Button to hide/show system usage -->
-                <button id="toggle-system-usage-btn" class="btn">Toggle System Usage</button>
-                <!-- Logout button -->
-                <button id="logout-btn" class="btn">Logout</button>
-            </div>
+<p><strong><i class="fas fa-coins"></i> ETCPOW Increment:</strong> <span id="etcpow-increment">Fetching...</span></p>
+<p><strong><i class="fas fa-bullseye"></i> Claim Target Balance:</strong> <span id="claim-target-balance">Fetching...</span></p>
+<p><strong><i class="fas fa-gift"></i> Bonus:</strong> <span id="bonus">Fetching...</span></p>
+<p><strong><i class="fas fa-play"></i> AutoStart Status:</strong> <span id="autostart-status">Fetching...</span></p>
         </div>
+        <!-- Button to Open the Settings Menu -->
+<button class="open-settings-btn"><i class="fas fa-cog"></i></button>
+
+<!-- Settings Menu -->
+<div class="settings-menu">
+    <button class="settings-menu-close">&times;</button>
+
+    <!-- Menu Header -->
+    <div class="settings-menu-header">Settings</div>
+
+    <!-- Geth Port -->
+    <div class="settings-section">
+        <label for="port">Geth Port:</label><br>
+        <input type="text" id="port" name="port" value="30303" required><br><br>
+    </div>
+
+    <!-- Change Credentials Button -->
+    <div class="settings-section">
+        <button id="change-credentials-btn" class="btn1">Change Credentials</button>
+    </div>
+    
+    <!-- Migrate Registration Button -->
+    <div class="settings-section">
+        <button id="migrate-registration-btn" class="btn1">Migrate Registration</button>
+    </div>
+
+    <!-- Toggle System Usage Button -->
+    <div class="settings-section">
+        <button id="toggle-system-usage-btn" class="btn1">Toggle System Usage</button>
+    </div>
+
+    <!-- Stake Check -->
+    <div class="settings-section">
+        <button id="check-staking-btn" class="btn1">Check Staking Status</button>
+    </div>
+
+    <!-- API Page -->
+    <div class="settings-section">
+        <button id="api-section-btn" class="btn1">Show API Endpoints</button>
+    </div>
+
+
+    <!-- Port Check -->
+    <div class="settings-section">
+    <button id="check-port-btn" class="btn1">Check Port Status</button>
+    </div>
+    
+    <!-- Delete Chain Button -->
+    <div class="settings-section">
+        <button id="delete-chain-data-btn" class="btn1">Delete Chain Data</button>
+    </div>
+
+    <!-- View Statistics Button -->
+    <div class="settings-section">
+        <button id="view-statistics-btn" class="btn1">View Statistics</button>
+    </div>
+
+    <!-- View NFT-License Button -->
+    <div class="settings-section">
+        <button id="walletButton" class="btn1">View NFT-License</button>
+    </div>
+
+    <!-- Automatic Claim Toggle -->
+    <div class="settings-section">
+        <label for="autoClaim">Automatic Claim:</label><br>
+        <div class="toggle-button">
+            <button id="autoClaimToggle" class="btn-toggle">Off</button>
+        </div><br><br>
+    </div>
+
+    <!-- Auto-Start Node Toggle -->
+    <div class="settings-section">
+        <label for="autoStartToggle">Auto-Start Node:</label><br>
+        <div class="toggle-button">
+            <button id="autoStartToggle" class="btn-toggle" style="background-color: red;">Off</button>
+        </div><br><br>
+    </div>
+
+    <!-- Delete Registration Button -->
+    <div class="settings-section">
+        <button id="delete-registration-btn" class="btn"><i class="fas fa-trash-alt"></i> Delete Registration</button>
+    </div>
+
+    <div class="settings-section">
+        <button id="restartButton" class="btn">
+            <i class="fas fa-redo-alt"></i> Restart Machine Now
+        </button>
+    </div>
+
+
+    <!-- Logout Button -->
+    <div class="settings-section">
+        <button id="logout-btn" class="btn">Logout</button>
+    </div>
+</div>
+
+<!-- Overlay for settings menu -->
+<div class="overlay"></div>
+
+        
+        
+        
+        
 
         <!-- Dark mode button -->
-        <button id="dark-mode" class="dark-mode-btn"><i id="dark-mode-icon" class="fa-solid fa-circle-half-stroke"></i></button>
-
+        <button id="theme-toggle-btn" class="theme-btn"><i id="white-mode-icon" class="fa-solid fa-sun"></i></button>
         <!-- System usage section with icons -->
         <div class="system-usage">
             <p><i class="fas fa-microchip"></i> <span id="cpu-usage">CPU Usage: Fetching...</span></p>
@@ -85,10 +151,13 @@
             <p><i class="fas fa-power-off"></i> <span id="pending-reboot">Pending Reboot: Fetching...</span></p>
         </div>
 
-        <button id="open-register-modal" class="btn">Open Registration</button>
-        <button id="last-claim-btn" class="btn">Last Claim</button>
-        <button id="help-btn" class="btn">Help</button>
-        <button id="global-btn" class="btn">Announcement</button>
+        <button id="open-register-modal" class="btn"><i class="fas fa-user-plus"></i> Open Registration</button>
+        <button id="last-claim-btn" class="btn"><i class="fas fa-history"></i> Last Claim</button>
+        <button id="help-btn" class="btn"><i class="fas fa-question-circle"></i> Help</button>
+        <button id="global-btn" class="btn"><i class="fas fa-bullhorn"></i> Announcement</button>
+        <button id="start-tutorial-btn" class="btn"><i class="fas fa-question-circle"></i> Start Tutorial</button>
+
+        
         <h2>Geth Console Output</h2>
         <div>
             <button id="font-size-increase-btn" class="icon-btn"><i class="fas fa-plus"></i></button>
@@ -97,116 +166,66 @@
         
         <textarea id="geth-output" readonly></textarea>
         
-        <button id="start-node-btn" class="btn">Start Node</button>
-        <button id="stop-node-btn" class="btn">Stop Node</button>
-        <button class="btn" id="claim-balance-btn">Claim Balance</button>
-        <h2>Current ETCPOW</h2>
+        <button id="start-node-btn" class="btn"><i class="fas fa-play"></i> Start Node</button>
+        <button id="stop-node-btn" class="btn"><i class="fas fa-stop"></i> Stop Node</button>
+        <button class="btn" id="claim-balance-btn"><i class="fas fa-coins"></i> Claim Balance</button>
+        <h2><i class="fas fa-chart-line"></i> Current ETCPOW</h2>
         <p id="current-balance">Fetching balance...</p>
         <p id="claim-estimated-time">Estimated Time to Claim: Fetching...</p>
     </div>
 
-    <!-- The Modal -->
-    <div id="register-modal" class="modal">
-        <!-- Modal content -->
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2>Register Node</h2>
-            <form id="registration-form" action="/register" method="POST">
-                <label for="username">Username:</label><br>
-                <input type="text" id="username" name="username" required><br>
-                <label for="email">Email:</label><br>
-                <input type="email" id="email" name="email" required><br>
-                <label for="wallet_address">Wallet Address:</label><br>
-                <input type="text" id="wallet_address" name="wallet_address" required><br><br>
-                <button type="submit" class="btn">Register Node</button>
-            </form>
-        </div>
-    </div>
+<!-- The Modal -->
+<div id="register-modal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Register Node</h2>
 
-<!-- Links to other pages -->
-<div class="page-links">
-    <div class="alert">
-        <i class="fas fa-exclamation-circle"></i>
-        <div class="alert-content">
-            <strong>Alert:</strong>
-            <p>This is just for demo purposes for GitHub. Most functionalities won't work here as most JavaScript scripts cannot be executed, and there is no backend. This is purely for design demonstration.</p>
+        <!-- Display Total NFT Count -->
+        <div id="total-nft-container" class="total-nft-container">
+            <p id="total-nft-count">Total NFTs found: <span id="nft-count-value">0</span></p>
         </div>
+        
+        <!-- Loading Spinner -->
+        <div id="loading-spinner" class="loading-spinner" style="display: none;">
+            <div class="spinner"></div> Loading...
+        </div>
+
+        <!-- Connect/Disconnect MetaMask Button -->
+        <button id="connect-button" class="btn">Connect MetaMask</button>
+        <button id="manual-button" class="btn">Manual Input</button>  <!-- Manual Input Button -->
+
+        <form id="registration-form" action="/register" method="POST" onsubmit="return validateForm()">
+            <!-- NFT ID Selection -->
+            <label for="nft-id">NFT ID:</label><br>
+            <select id="nft-id" name="nft-id" required>
+                <option value="">Select an NFT</option>
+            </select><br>
+
+            <!-- Wallet Address Input -->
+            <label for="wallet-address">Wallet Address:</label><br>
+            <input type="text" id="wallet-address" name="wallet-address" required readonly><br>
+
+            <!-- Email Input -->
+            <label for="email">Email:</label><br>
+            <input type="email" id="email" name="email" required><br><br>
+
+            <button type="submit" class="btn">Register Node</button>
+        </form>
     </div>
 </div>
-
-<a href="login.html" class="btn login-btn">Login</a>
 
 
 
     <footer class="footer">
-        <p>&copy; <script>document.write( new Date().getFullYear() );</script> ETCMC Client. All rights reserved.</p>
+        <p>&copy; <script>document.write(new Date().getFullYear());</script> ETCMC Client. All rights reserved. | <a href="https://pool.etcmc-monitor.org/" target="_blank">ETC Pool</a></p>
     </footer>
+    
 
-    <script src="static/scripts.js"></script> <!-- Adjusted path for JavaScript -->
+    <script src="static/scripts.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+
     <script>
-    // Function to increase font size
-document.getElementById("font-size-increase-btn").addEventListener("click", function() {
-    changeFontSize(1);
-});
 
-// Function to decrease font size
-document.getElementById("font-size-decrease-btn").addEventListener("click", function() {
-    changeFontSize(-1);
-});
-
-// Function to change font size
-function changeFontSize(delta) {
-    var textarea = document.getElementById("geth-output");
-    var currentSize = parseInt(window.getComputedStyle(textarea, null).getPropertyValue('font-size'));
-    var newSize = currentSize + delta;
-    textarea.style.fontSize = newSize + "px";
-    // Save font size in local storage
-    localStorage.setItem("fontSize", newSize);
-}
-
-// Load font size from local storage if available
-window.addEventListener("load", function() {
-    var fontSize = localStorage.getItem("fontSize");
-    if (fontSize) {
-        document.getElementById("geth-output").style.fontSize = fontSize + "px";
-    }
-});
-
-// Function to fetch registration status and display username
-function fetchRegistrationStatus() {
-    fetch('/register/check_status')
-        .then(response => response.json())
-        .then(data => {
-            console.log('Registration status response:', data); // Log the response data
-            const usernameDisplay = document.getElementById('username-display');
-            if (data.registration_details) {
-                const username = data.registration_details.match(/Username: (.+)\n/)[1];
-                console.log('Username:', username); // Log the extracted username
-                usernameDisplay.textContent = `Welcome, ${username}`; // Set the username in the element
-            } else {
-                console.error('No registration details found'); // Log if no registration details are found
-                // Remove HTML content from the username display element
-                usernameDisplay.innerHTML = '';
-            }
-        })
-        .catch(error => console.error('Error checking registration status:', error)); // Log any errors during the process
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-            fetch('/api/parameters')
-                .then(response => response.json())
-                .then(data => {
-                    const etcpowIncrement = data.ETCPOW_INCREMENT;
-
-                    document.getElementById('claim-target-balance').textContent = data.CLAIM_TARGET_BALANCE;
-                    document.getElementById('etcpow-increment').textContent = etcpowIncrement;
-
-                })
-                .catch(error => {
-                    console.error('Error fetching parameters:', error);
-                });
-        });
-fetchRegistrationStatus();
 
 </script>
 </body>

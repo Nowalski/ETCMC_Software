@@ -7,17 +7,17 @@ ETCMC_Software for **Windows / Linux**
 
 ---
 
-## Step-by-Step Guide for Setting Up ETCMC 2.7.1
+## Step-by-Step Guide for Setting Up ETCMC 3.0.0
 
 ### **Step 1: Download and Installation**
-Visit the official GitHub page to download **ETCMC 2.7.1**.  
+Visit the official GitHub page to download **ETCMC 3.0.0**.  
 🔗 [ETCMC 2.7.1 on GitHub](https://nowalski.github.io/ETCMC_Software/)  
 Download the latest release to your computer.
 
 ---
 
 ### **Step 2: Run the Application**
-- Locate the downloaded **ETCMC 2.7.1** executable file.  
+- Locate the downloaded **ETCMC 3.0.0** executable file.  
 - Right-click the file and select **“Run as administrator”** to ensure proper installation and permissions.
 
 ---

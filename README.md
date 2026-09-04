@@ -2,16 +2,16 @@
 
 Official ETCMC Node & Client Software  
 **Platforms:** Windows & Linux  
-**Latest Stable Release:** `3.0.1`  
+**Latest Stable Release:** `3.0.6`  
 
 🌐 Project Preview:  
 https://github.com/Nowalski/ETCMC_Software
 
 ---
 
-# 🚀 ETCMC 3.0.1
+# 🚀 ETCMC 3.0.6
 
-Version **3.0.1** introduces:
+Version **3.0.6** introduces:
 
 - ✅ Full official Linux support
 - ⚡ Improved startup reliability
@@ -212,9 +212,9 @@ You can monitor:
 
 ---
 
-# 🐧 Linux Installation (Fully Supported in 3.0.1)
+# 🐧 Linux Installation (Fully Supported in 3.0.6)
 
-Linux is officially supported starting from version **3.0.1**.
+Linux is officially supported starting from version **3.0.6**.
 
 ---
 
@@ -271,7 +271,7 @@ Default dashboard port: **5001**
 
 ## Linux
 
-Fully supported as of 3.0.1.
+Fully supported as of 3.0.6.
 
 ---
 
